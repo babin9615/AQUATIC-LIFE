@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Contact us - {{ site.name }}{% endblock %}
+{% block content %}
+{% include 'page_head.html' with title='Contact us' sub='Questions about an order or choosing fish? We are happy to help.' %}
+<section class="section"><div class="container"><div class="row g-4 g-lg-5">
+  <div class="col-lg-5">
+    <h2 class="section-title mb-4">Get in touch</h2>
+    <div class="d-grid gap-3">
+      <div class="info-card"><i class="bi bi-geo-alt"></i><div><b>Address</b><div class="text-secondary">{{ site.address }}</div></div></div>
+      <div class="info-card"><i class="bi bi-telephone"></i><div><b>Phone</b><div><a class="text-secondary text-decoration-none" href="tel:{{ site.phone }}">{{ site.phone }}</a></div></div></div>
+      <div class="info-card"><i class="bi bi-envelope"></i><div><b>Email</b><div><a class="text-secondary text-decoration-none" href="mailto:{{ site.email }}">{{ site.email }}</a></div></div></div>
+      <div class="info-card"><i class="bi bi-clock"></i><div><b>Working hours</b><div class="text-secondary">Mon – Sat, 9:00 AM – 7:00 PM</div></div></div>
+    </div>
+  </div>
+  <div class="col-lg-7"><form method="post" class="card border-0 shadow-soft" novalidate>{% csrf_token %}<div class="card-body p-4">
+    <h4 class="fw-bold mb-3">Send us a message</h4>
+    {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="row"><div class="col-md-6">{% include 'form_field.html' with f=form.name %}</div><div class="col-md-6">{% include 'form_field.html' with f=form.email %}</div></div>
+    <div class="row"><div class="col-md-6">{% include 'form_field.html' with f=form.phone %}</div><div class="col-md-6">{% include 'form_field.html' with f=form.subject %}</div></div>
+    {% include 'form_field.html' with f=form.message %}
+    <button class="btn btn-primary btn-lg"><i class="bi bi-send me-1"></i>Send message</button>
+  </div></form></div>
+</div></div></section>
+{% endblock %}

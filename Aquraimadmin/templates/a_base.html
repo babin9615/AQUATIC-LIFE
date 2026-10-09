@@ -1,0 +1,46 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Admin{% endblock %} · Aquatic Life Admin</title>
+<link rel="icon" href="{% static 'images/logo.png' %}">
+<link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+</head>
+<body>
+<div class="offcanvas-lg offcanvas-start admin-side text-white" tabindex="-1" id="adminSide">
+  <div class="offcanvas-header d-lg-none"><span class="fw-bold">Menu</span><button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#adminSide" aria-label="Close"></button></div>
+  <div class="offcanvas-body d-block p-0">
+    <div class="p-4 d-none d-lg-block"><a class="brand" href="{% url 'dashboard' %}"><img src="{% static 'images/logo.png' %}" alt="">AQUATIC LIFE</a></div>
+    <nav class="nav flex-column">
+      <a class="nav-link {% if tab == 'dashboard' %}on{% endif %}" href="{% url 'dashboard' %}"><i class="bi bi-speedometer2"></i>Dashboard</a>
+      <div class="nav-label">Catalogue</div>
+      <a class="nav-link {% if tab == 'fish' %}on{% endif %}" href="{% url 'a_fish' %}"><i class="bi bi-water"></i>Fish</a>
+      <a class="nav-link {% if tab == 'plant' %}on{% endif %}" href="{% url 'a_plants' %}"><i class="bi bi-flower2"></i>Aquatic plants</a>
+      <a class="nav-link {% if tab == 'categories' %}on{% endif %}" href="{% url 'a_categories' %}"><i class="bi bi-grid"></i>Categories</a>
+      <a class="nav-link {% if tab == 'blogs' %}on{% endif %}" href="{% url 'a_blogs' %}"><i class="bi bi-journal-text"></i>Blogs</a>
+      <div class="nav-label">Sales</div>
+      <a class="nav-link {% if tab == 'orders' %}on{% endif %}" href="{% url 'a_orders' %}"><i class="bi bi-bag-check"></i>Orders</a>
+      <a class="nav-link {% if tab == 'users' %}on{% endif %}" href="{% url 'a_users' %}"><i class="bi bi-people"></i>Users</a>
+      <a class="nav-link {% if tab == 'messages' %}on{% endif %}" href="{% url 'a_messages' %}"><i class="bi bi-envelope"></i>Messages{% if unread %}<span class="badge text-bg-danger ms-auto">{{ unread }}</span>{% endif %}</a>
+      <div class="nav-label">Site</div>
+      <a class="nav-link" href="{% url 'home' %}" target="_blank"><i class="bi bi-box-arrow-up-right"></i>View shop</a>
+      <a class="nav-link" href="{% url 'adminlogout' %}"><i class="bi bi-box-arrow-left"></i>Log out</a>
+    </nav>
+  </div>
+</div>
+
+<div class="admin-main">
+  <header class="admin-top d-flex align-items-center justify-content-between px-3 px-lg-4 py-2 sticky-top">
+    <button class="btn btn-outline-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSide" aria-controls="adminSide" aria-label="Open menu"><i class="bi bi-list"></i></button>
+    <span class="fw-semibold text-secondary d-none d-lg-inline">Admin panel</span>
+    <div class="d-flex align-items-center gap-2"><span class="badge text-bg-primary"><i class="bi bi-shield-lock me-1"></i>Admin</span>
+      <a class="btn btn-sm btn-outline-danger" href="{% url 'adminlogout' %}">Log out</a></div>
+  </header>
+  <main class="p-3 p-lg-4">
+    {% for m in messages %}<div class="alert alert-{{ m.tags|default:'info' }} alert-dismissible fade show" role="alert">{{ m }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>{% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body></html>

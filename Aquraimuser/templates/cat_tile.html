@@ -1,0 +1,4 @@
+<a class="cat-tile" href="{% url 'category' c.slug %}">
+  {% if c.image %}<img src="{{ c.image.url }}" alt="{{ c.name }}" loading="lazy">{% else %}<div class="ph"><i class="bi bi-image"></i></div>{% endif %}
+  <span class="label">{{ c.name }}{% if c.n is not None %}<small>{{ c.n }} item{{ c.n|pluralize }}</small>{% endif %}</span>
+</a>

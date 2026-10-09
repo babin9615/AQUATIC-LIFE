@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Checkout - {{ site.name }}{% endblock %}
+{% block content %}
+{% url 'cart' as cart_url %}{% include 'page_head.html' with title='Checkout' sub='Cash on delivery' crumb='Cart' crumb_url=cart_url %}
+<section class="section pt-4"><div class="container"><div class="row g-4">
+  <div class="col-lg-7"><form method="post" class="card border-0 shadow-soft" novalidate>{% csrf_token %}<div class="card-body p-4">
+    <h5 class="fw-bold mb-3">Delivery details</h5>
+    {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="row"><div class="col-md-6">{% include 'form_field.html' with f=form.full_name %}</div><div class="col-md-6">{% include 'form_field.html' with f=form.phone %}</div></div>
+    {% include 'form_field.html' with f=form.address %}
+    <div class="row"><div class="col-md-6">{% include 'form_field.html' with f=form.city %}</div><div class="col-md-6">{% include 'form_field.html' with f=form.pincode %}</div></div>
+    <button class="btn btn-primary btn-lg w-100">Place order · ₹{{ total|floatformat:"-2" }}</button>
+    <p class="text-secondary small text-center mt-3 mb-0"><i class="bi bi-cash-coin me-1"></i>Payment: cash on delivery.</p>
+  </div></form></div>
+  <div class="col-lg-5"><div class="card border-0 shadow-soft"><div class="card-body p-4">
+    <h5 class="fw-bold mb-3">Order summary</h5>
+    {% for i in items %}<div class="d-flex align-items-center gap-3 mb-3">
+      {% if i.p.image %}<img class="thumb-sm" src="{{ i.p.image.url }}" alt="">{% endif %}
+      <div class="flex-grow-1"><div class="fw-semibold">{{ i.p.name }}</div><small class="text-secondary">{{ i.qty }} × ₹{{ i.p.price|floatformat:"-2" }}</small></div>
+      <strong>₹{{ i.sub|floatformat:"-2" }}</strong></div>{% endfor %}
+    <hr><div class="d-flex justify-content-between fs-5 fw-bold"><span>Total</span><span>₹{{ total|floatformat:"-2" }}</span></div>
+  </div></div></div>
+</div></div></section>
+{% endblock %}

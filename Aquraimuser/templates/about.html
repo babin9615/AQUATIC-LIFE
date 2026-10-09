@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About us - {{ site.name }}{% endblock %}
+{% block content %}
+{% include 'page_head.html' with title='About us' sub="India's trusted aquatic platform" %}
+<section class="section"><div class="container"><div class="row align-items-center g-4 g-lg-5">
+  <div class="col-lg-6"><h2 class="section-title mb-4">Our story</h2>
+    <p class="fs-5 text-secondary">We connect aquarium hobbyists across India with healthy, quarantined fish and live plants.</p>
+    <p>Every order is packed for safe transit with oxygen-filled bags and insulated boxes, and comes with a live arrival guarantee. Whether you are setting up your first nano tank or expanding a planted aquascape, our team helps you choose species that are compatible and easy to care for.</p>
+    <p>Questions about an order? Reach us at <a href="mailto:{{ site.email }}">{{ site.email }}</a> or visit the <a href="{% url 'contact' %}">contact page</a>.</p>
+    <a href="{% url 'fish' %}" class="btn btn-primary me-2">Shop fish</a><a href="{% url 'plants' %}" class="btn btn-outline-primary">Shop plants</a></div>
+  <div class="col-lg-6"><img src="{% static 'images/aq1.jpg' %}" alt="Our aquariums" class="img-fluid rounded-4 shadow w-100" style="max-height:460px;object-fit:cover"></div>
+</div></div></section>
+
+<section class="section bg-soft"><div class="container"><div class="row g-3 g-md-4 text-center">
+  <div class="col-6 col-lg-3"><div class="stat"><b>{{ n_products }}+</b>Products</div></div>
+  <div class="col-6 col-lg-3"><div class="stat"><b>{{ n_cats }}</b>Categories</div></div>
+  <div class="col-6 col-lg-3"><div class="stat"><b>{{ n_customers }}+</b>Happy customers</div></div>
+  <div class="col-6 col-lg-3"><div class="stat"><b>{{ n_orders }}+</b>Orders delivered</div></div>
+</div></div></section>
+
+<section class="section"><div class="container">
+  <h2 class="section-title mb-4">Why hobbyists choose us</h2>
+  <div class="row g-4">
+    <div class="col-md-4"><div class="info-card h-100"><i class="bi bi-heart-pulse"></i><div><h5 class="fw-bold">Live arrival guarantee</h5><p class="text-secondary mb-0">If anything arrives unhealthy, tell us within 2 hours and we make it right.</p></div></div></div>
+    <div class="col-md-4"><div class="info-card h-100"><i class="bi bi-shield-check"></i><div><h5 class="fw-bold">Quarantined & healthy</h5><p class="text-secondary mb-0">All stock is quarantined and observed before it is listed for sale.</p></div></div></div>
+    <div class="col-md-4"><div class="info-card h-100"><i class="bi bi-cash-coin"></i><div><h5 class="fw-bold">Cash on delivery</h5><p class="text-secondary mb-0">Order with confidence and pay at your doorstep, anywhere in India.</p></div></div></div>
+  </div>
+</div></section>
+{% endblock %}

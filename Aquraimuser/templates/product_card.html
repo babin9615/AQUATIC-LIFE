@@ -1,0 +1,24 @@
+<div class="{{ cols|default:'col-6 col-md-4 col-lg-3' }}">
+  <div class="p-card">
+    <a href="{% url 'product' p.pk %}" class="p-thumb" aria-label="{{ p.name }}">
+      {% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy">{% else %}<div class="ph"><i class="bi bi-image"></i></div>{% endif %}
+      <span class="p-tags">
+        {% if not p.stock %}<span class="badge text-bg-dark">Sold out</span>
+        {% else %}{% if p.discount %}<span class="badge text-bg-danger">{{ p.discount }}% OFF</span>{% endif %}
+        {% if p.stock <= 3 %}<span class="badge text-bg-warning">Only {{ p.stock }} left</span>{% endif %}{% endif %}
+        {% if p.featured and p.stock %}<span class="badge text-bg-primary">Popular</span>{% endif %}
+      </span>
+    </a>
+    <div class="p-body">
+      <span class="p-cat">{{ p.category.name }}</span>
+      <a class="p-name" href="{% url 'product' p.pk %}">{{ p.name }}</a>
+      <div class="p-foot">
+        <div class="mb-2"><span class="price">₹{{ p.price|floatformat:"-2" }}</span>{% if p.discount %}<span class="old-price">₹{{ p.old_price|floatformat:"-2" }}</span>{% endif %}</div>
+        {% if p.stock %}
+        <form method="post" action="{% url 'cart_add' p.pk %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <button class="btn btn-primary btn-sm w-100"><i class="bi bi-cart-plus me-1"></i>Add to cart</button></form>
+        {% else %}<button class="btn btn-secondary btn-sm w-100" disabled>Unavailable</button>{% endif %}
+      </div>
+    </div>
+  </div>
+</div>

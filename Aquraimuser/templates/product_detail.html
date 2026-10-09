@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}{{ p.name }} - {{ site.name }}{% endblock %}
+{% block meta_desc %}{{ p.description|default:p.name|truncatewords:25 }}{% endblock %}
+{% block content %}
+<div class="bg-soft py-3"><div class="container"><nav aria-label="breadcrumb"><ol class="breadcrumb mb-0">
+  <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{% if p.category.kind == 'plant' %}{% url 'plants' %}{% else %}{% url 'fish' %}{% endif %}">{{ p.category.get_kind_display }}</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'category' p.category.slug %}">{{ p.category.name }}</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ p.name }}</li></ol></nav></div></div>
+
+<section class="section pb-2"><div class="container"><div class="row g-4 g-lg-5">
+  <div class="col-md-6">
+    {% if p.image %}<img class="detail-img shadow-soft" src="{{ p.image.url }}" alt="{{ p.name }}">
+    {% else %}<div class="detail-img d-flex align-items-center justify-content-center text-secondary fs-1"><i class="bi bi-image"></i></div>{% endif %}
+  </div>
+  <div class="col-md-6">
+    <a class="badge text-bg-primary text-decoration-none mb-2" href="{% url 'category' p.category.slug %}">{{ p.category.name }}</a>
+    <h1 class="fw-bold h2">{{ p.name }}</h1>
+    <div class="my-3"><span class="price fs-2">₹{{ p.price|floatformat:"-2" }}</span>
+      {% if p.discount %}<span class="old-price fs-6">₹{{ p.old_price|floatformat:"-2" }}</span> <span class="badge text-bg-danger ms-1">{{ p.discount }}% OFF</span>{% endif %}</div>
+    <p class="mb-3">{% if p.stock > 3 %}<span class="text-success fw-semibold"><i class="bi bi-check-circle-fill me-1"></i>In stock</span>
+      {% elif p.stock %}<span class="text-warning fw-semibold"><i class="bi bi-exclamation-circle-fill me-1"></i>Only {{ p.stock }} left</span>
+      {% else %}<span class="text-danger fw-semibold"><i class="bi bi-x-circle-fill me-1"></i>Out of stock</span>{% endif %}</p>
+    <p class="text-secondary">{{ p.description|default:"No description yet."|truncatewords:45 }}</p>
+    {% if p.stock %}
+    <form method="post" action="{% url 'cart_add' p.pk %}" class="row g-2 align-items-center my-4">{% csrf_token %}
+      <div class="col-auto"><div class="input-group qty-group">
+        <button class="btn btn-outline-secondary" type="button" onclick="var i=this.parentNode.querySelector('input');i.stepDown()" aria-label="Decrease">−</button>
+        <input type="number" class="form-control text-center" name="qty" value="1" min="1" max="{{ p.stock }}" aria-label="Quantity">
+        <button class="btn btn-outline-secondary" type="button" onclick="var i=this.parentNode.querySelector('input');i.stepUp()" aria-label="Increase">+</button></div></div>
+      <div class="col-auto"><button class="btn btn-primary btn-lg"><i class="bi bi-cart-plus me-1"></i>Add to cart</button></div>
+      <div class="col-auto"><button class="btn btn-outline-primary btn-lg" name="buy" value="1">Buy now</button></div>
+    </form>{% endif %}
+    <ul class="list-unstyled small text-secondary border-top pt-3 mb-0">
+      <li class="mb-2"><i class="bi bi-heart-pulse text-primary me-2"></i>Live arrival guarantee</li>
+      <li class="mb-2"><i class="bi bi-box-seam text-primary me-2"></i>Oxygen-filled, temperature-safe packing</li>
+      <li><i class="bi bi-cash-coin text-primary me-2"></i>Cash on delivery available across India</li>
+    </ul>
+  </div>
+</div></div></section>
+
+<section class="section pt-4"><div class="container">
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#t-desc" type="button">Description</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#t-ship" type="button">Shipping & care</button></li>
+  </ul>
+  <div class="tab-content border border-top-0 rounded-bottom p-4">
+    <div class="tab-pane fade show active" id="t-desc">{{ p.description|default:"No description yet."|linebreaks }}</div>
+    <div class="tab-pane fade" id="t-ship">
+      <p>Orders are packed in breathable, insulated boxes with oxygen-filled bags and shipped to arrive within 2–4 days.</p>
+      <p class="mb-0">On arrival, float the sealed bag in your tank for 20 minutes, then add small amounts of tank water before releasing. If anything arrives unhealthy, <a href="{% url 'contact' %}">contact us</a> within 2 hours with a photo.</p>
+    </div>
+  </div>
+</div></section>
+
+{% if related %}<section class="section bg-soft"><div class="container">
+  <h2 class="section-title mb-4">More from {{ p.category.name }}</h2>
+  <div class="row g-3 g-md-4">{% for p in related %}{% include 'product_card.html' %}{% endfor %}</div>
+</div></section>{% endif %}
+{% endblock %}

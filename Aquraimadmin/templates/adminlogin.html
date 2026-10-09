@@ -1,0 +1,21 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin login · Aquatic Life</title>
+<link rel="icon" href="{% static 'images/logo.png' %}">
+<link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin.css' %}"></head>
+<body><div class="login-bg"><div class="card login-card"><div class="card-body p-4 p-md-5">
+  <div class="text-center mb-4"><img src="{% static 'images/logo.png' %}" alt="" height="72"><h3 class="fw-bold mt-2 mb-0 text-primary">Admin sign in</h3><p class="text-secondary">Aquatic Life control panel</p></div>
+  {% for m in messages %}<div class="alert alert-{{ m.tags|default:'info' }} py-2" role="alert">{{ m }}</div>{% endfor %}
+  <form method="POST" action="{% url 'adminaction' %}">{% csrf_token %}
+    <div class="mb-3"><label class="form-label fw-semibold" for="email">Email</label>
+      <div class="input-group"><span class="input-group-text"><i class="bi bi-person"></i></span><input type="email" class="form-control" id="email" name="email" placeholder="Admin email" required autofocus></div></div>
+    <div class="mb-4"><label class="form-label fw-semibold" for="password">Password</label>
+      <div class="input-group"><span class="input-group-text"><i class="bi bi-lock"></i></span><input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+        <button class="btn btn-outline-secondary" type="button" id="pw" aria-label="Show password"><i class="bi bi-eye"></i></button></div></div>
+    <button type="submit" class="btn btn-primary btn-lg w-100">Sign in <i class="bi bi-arrow-right ms-1"></i></button>
+  </form>
+  <p class="text-center mt-4 mb-0"><a href="{% url 'home' %}" class="text-decoration-none text-secondary"><i class="bi bi-arrow-left"></i> Back to shop</a></p>
+</div></div></div>
+<script>document.getElementById('pw').onclick=function(){var i=document.getElementById('password'),s=i.type==='password';i.type=s?'text':'password';this.innerHTML=s?'<i class="bi bi-eye-slash"></i>':'<i class="bi bi-eye"></i>'}</script>
+</body></html>

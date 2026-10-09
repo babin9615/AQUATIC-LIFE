@@ -1,0 +1,14 @@
+{% extends 'a_base.html' %}{% block title %}{{ p.name }}{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3"><h1 class="h3 fw-bold mb-0">{{ p.name }}</h1>
+  <div class="d-flex gap-2"><a class="btn btn-outline-secondary" href="{% if p.category.kind == 'plant' %}{% url 'a_plants' %}{% else %}{% url 'a_fish' %}{% endif %}"><i class="bi bi-arrow-left me-1"></i>Back</a>
+    <a class="btn btn-primary" href="{% url 'a_product_edit' p.pk %}"><i class="bi bi-pencil me-1"></i>Edit</a>
+    <form method="post" action="{% url 'a_product_delete' p.pk %}" onsubmit="return confirm('Delete this product?')">{% csrf_token %}<button class="btn btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete</button></form></div></div>
+<div class="row g-4"><div class="col-md-5"><div class="box p-3">{% if p.image %}<img class="big-img" src="{{ p.image.url }}" alt="{{ p.name }}">{% else %}<p class="text-secondary mb-0">No image uploaded.</p>{% endif %}</div></div>
+<div class="col-md-7"><div class="box p-4"><dl class="kv">
+  <dt>Type</dt><dd><span class="badge {% if p.category.kind == 'plant' %}text-bg-success{% else %}text-bg-primary{% endif %}">{{ p.category.get_kind_display }}</span></dd>
+  <dt>Category</dt><dd>{{ p.category.name }}</dd><dt>Price</dt><dd>₹{{ p.price|floatformat:"-2" }}{% if p.old_price %} <small class="text-secondary text-decoration-line-through">₹{{ p.old_price|floatformat:"-2" }}</small>{% endif %}</dd>
+  <dt>Stock</dt><dd>{{ p.stock }}</dd><dt>Featured</dt><dd>{{ p.featured|yesno:"Yes,No" }}</dd><dt>Added</dt><dd>{{ p.created|date:"d M Y" }}</dd>
+  <dt>Description</dt><dd>{{ p.description|default:"—" }}</dd></dl>
+  <a class="btn btn-outline-primary mt-3" href="{% url 'product' p.pk %}" target="_blank">See on shop <i class="bi bi-box-arrow-up-right ms-1"></i></a></div></div></div>
+{% endblock %}

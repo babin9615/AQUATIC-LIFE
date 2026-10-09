@@ -1,0 +1,21 @@
+{% extends 'auth_base.html' %}{% block title %}Log in{% endblock %}
+{% block form %}
+<h2 class="fw-bold mb-1">Welcome back</h2>
+<p class="text-secondary mb-4">Log in to shop and track your orders.</p>
+<form action="{% url 'loginaction' %}" method="post" novalidate class="needs-validation">{% csrf_token %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <div class="mb-3">
+    <label class="form-label fw-semibold" for="email">Email</label>
+    <div class="input-group"><span class="input-group-text"><i class="bi bi-envelope"></i></span>
+      <input type="email" class="form-control form-control-lg fs-6" id="email" name="email" value="{{ email|default:'' }}" placeholder="you@example.com" required autofocus></div>
+  </div>
+  <div class="mb-4">
+    <label class="form-label fw-semibold" for="password">Password</label>
+    <div class="input-group"><span class="input-group-text"><i class="bi bi-lock"></i></span>
+      <input type="password" class="form-control form-control-lg fs-6" id="password" name="password" placeholder="Your password" required>
+      <button type="button" class="btn btn-outline-secondary pw-toggle" data-target="password" aria-label="Show password"><i class="bi bi-eye"></i></button></div>
+  </div>
+  <button type="submit" class="btn btn-primary btn-lg w-100">Log in</button>
+</form>
+<p class="text-center text-secondary mt-4 mb-0">New here? <a class="fw-semibold text-decoration-none" href="{% url 'signup' %}">Create an account</a></p>
+{% endblock %}

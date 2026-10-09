@@ -1,0 +1,38 @@
+{% extends 'a_base.html' %}{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+  <h1 class="h3 fw-bold mb-0">Dashboard</h1>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-primary" href="{% url 'a_product_new' %}?kind=fish"><i class="bi bi-plus-lg me-1"></i>Add fish</a>
+    <a class="btn btn-success" href="{% url 'a_product_new' %}?kind=plant"><i class="bi bi-plus-lg me-1"></i>Add plant</a>
+    <a class="btn btn-outline-primary" href="{% url 'a_category_new' %}">Add category</a>
+    <a class="btn btn-outline-primary" href="{% url 'a_blog_new' %}">Add blog</a>
+  </div>
+</div>
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3"><div class="stat-card"><span class="ic bg-primary"><i class="bi bi-water"></i></span><div><b>{{ fish }}</b><small>Fish</small></div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><span class="ic bg-success"><i class="bi bi-flower2"></i></span><div><b>{{ plants }}</b><small>Plants</small></div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><span class="ic" style="background:#6f42c1"><i class="bi bi-grid"></i></span><div><b>{{ cats }}</b><small>Categories</small></div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><span class="ic bg-info"><i class="bi bi-people"></i></span><div><b>{{ users }}</b><small>Users</small></div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><span class="ic bg-warning"><i class="bi bi-bag-check"></i></span><div><b>{{ orders }}</b><small>Orders</small></div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><span class="ic bg-danger"><i class="bi bi-currency-rupee"></i></span><div><b>₹{{ revenue|floatformat:"-2" }}</b><small>Revenue</small></div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><span class="ic bg-secondary"><i class="bi bi-journal-text"></i></span><div><b>{{ blogs }}</b><small>Blog posts</small></div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><span class="ic" style="background:#fd7e14"><i class="bi bi-envelope"></i></span><div><b>{{ unread }}</b><small>Unread messages</small></div></div></div>
+</div>
+<div class="row g-4">
+  <div class="col-xl-7"><div class="box p-3 h-100"><div class="d-flex justify-content-between align-items-center mb-2"><h5 class="fw-bold mb-0">Recent orders</h5><a href="{% url 'a_orders' %}" class="small text-decoration-none">View all</a></div>
+    <div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody>
+    {% for o in recent %}<tr><td>#{{ o.pk }}</td><td>{{ o.user.name }}</td><td>₹{{ o.total|floatformat:"-2" }}</td>
+      <td><span class="badge {% if o.status == 'delivered' %}text-bg-success{% elif o.status == 'cancelled' %}text-bg-danger{% elif o.status == 'shipped' %}text-bg-warning{% else %}text-bg-primary{% endif %}">{{ o.get_status_display }}</span></td>
+      <td><a class="btn btn-sm btn-outline-primary" href="{% url 'a_order' o.pk %}">View</a></td></tr>
+    {% empty %}<tr><td colspan="5" class="text-secondary">No orders yet.</td></tr>{% endfor %}</tbody></table></div></div></div>
+  <div class="col-xl-5"><div class="box p-3 h-100"><h5 class="fw-bold mb-2">Low stock (3 or fewer)</h5>
+    <div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Product</th><th>Stock</th><th></th></tr></thead><tbody>
+    {% for p in low %}<tr><td>{{ p.name }}<br><small class="text-secondary">{{ p.category.name }}</small></td><td><span class="badge {% if p.stock == 0 %}text-bg-danger{% else %}text-bg-warning{% endif %}">{{ p.stock }}</span></td><td><a class="btn btn-sm btn-outline-primary" href="{% url 'a_product_edit' p.pk %}">Restock</a></td></tr>
+    {% empty %}<tr><td colspan="3" class="text-secondary">All products are well stocked.</td></tr>{% endfor %}</tbody></table></div></div></div>
+  <div class="col-12"><div class="box p-3"><div class="d-flex justify-content-between align-items-center mb-2"><h5 class="fw-bold mb-0">Latest contact messages</h5><a href="{% url 'a_messages' %}" class="small text-decoration-none">View all</a></div>
+    <div class="list-group list-group-flush">{% for m in latest_msgs %}<a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-3" href="{% url 'a_message' m.pk %}">
+      <span class="text-truncate"><b>{{ m.subject }}</b> <span class="text-secondary">— {{ m.name }}</span></span><span class="d-flex align-items-center gap-2 flex-shrink-0">{% if not m.is_read %}<span class="badge text-bg-danger">New</span>{% endif %}<small class="text-secondary">{{ m.created|date:"d M" }}</small></span></a>
+    {% empty %}<div class="text-secondary py-2">No messages yet.</div>{% endfor %}</div></div></div>
+</div>
+{% endblock %}

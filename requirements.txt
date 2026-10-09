@@ -1,0 +1,4 @@
+Django>=5.0
+Pillow>=10.0
+# Only needed if you run with MySQL (USE_MYSQL=1):
+# mysqlclient>=2.2

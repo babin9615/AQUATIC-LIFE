@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }} - {{ site.name }}{% endblock %}
+{% block meta_desc %}{{ post.excerpt|default:post.content|truncatewords:25 }}{% endblock %}
+{% block content %}
+{% url 'blogs' as blogs_url %}{% include 'page_head.html' with title=post.title sub=post.created|date:"d M Y" crumb='Blogs' crumb_url=blogs_url %}
+<section class="section pt-4"><div class="container" style="max-width:820px">
+  {% if post.image %}<img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid rounded-4 shadow-soft mb-4 w-100" style="max-height:440px;object-fit:cover">{% endif %}
+  <article class="blog-content">{{ post.content|linebreaks }}</article>
+  <a class="btn btn-outline-primary mt-3" href="{% url 'blogs' %}"><i class="bi bi-arrow-left me-1"></i>All posts</a>
+</div></section>
+{% if more %}<section class="section bg-soft"><div class="container"><h2 class="section-title mb-4">More to read</h2>
+  <div class="row g-4">{% for post in more %}<div class="col-md-6 col-lg-4">{% include 'blog_card.html' %}</div>{% endfor %}</div></div></section>{% endif %}
+{% endblock %}

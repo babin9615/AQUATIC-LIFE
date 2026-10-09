@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Order #{{ o.pk }} - {{ site.name }}{% endblock %}
+{% block content %}
+{% url 'orders' as orders_url %}{% include 'page_head.html' with title='Order details' sub=o.created|date:"d M Y, H:i" crumb='My orders' crumb_url=orders_url %}
+<section class="section pt-4"><div class="container" style="max-width:900px">
+  <h4 class="fw-bold mb-3">Order #{{ o.pk }}</h4>
+  {% if o.status == 'cancelled' %}<div class="alert alert-danger">This order was cancelled.</div>
+  {% else %}<ol class="steps">{% for st in steps %}<li class="{% if o.status == st %}now{% endif %}">{{ st|capfirst }}</li>{% endfor %}</ol>{% endif %}
+  <div class="card border-0 shadow-soft mb-4"><div class="table-responsive"><table class="table align-middle mb-0">
+    <thead class="table-light"><tr><th>Item</th><th>Price</th><th>Qty</th><th class="text-end">Subtotal</th></tr></thead>
+    <tbody>{% for i in o.items.all %}<tr><td>{% if i.product %}<a href="{% url 'product' i.product_id %}" class="text-decoration-none">{{ i.name }}</a>{% else %}{{ i.name }}{% endif %}</td>
+      <td>₹{{ i.price|floatformat:"-2" }}</td><td>{{ i.quantity }}</td><td class="text-end">₹{{ i.subtotal|floatformat:"-2" }}</td></tr>{% endfor %}</tbody>
+    <tfoot><tr class="fw-bold"><td colspan="3">Total (cash on delivery)</td><td class="text-end">₹{{ o.total|floatformat:"-2" }}</td></tr></tfoot></table></div></div>
+  <div class="card border-0 shadow-soft mb-4"><div class="card-body"><h5 class="fw-bold">Delivery details</h5>
+    <p class="mb-1">{{ o.full_name }} · {{ o.phone }}</p><p class="mb-0 text-secondary">{{ o.address }}, {{ o.city }} {{ o.pincode }}</p></div></div>
+  {% if o.status == 'placed' %}<form method="post" action="{% url 'order_cancel' o.pk %}" onsubmit="return confirm('Cancel this order?')">{% csrf_token %}<button class="btn btn-outline-danger">Cancel order</button></form>{% endif %}
+  <a class="d-inline-block mt-3 text-decoration-none" href="{% url 'orders' %}"><i class="bi bi-arrow-left"></i> Back to my orders</a>
+</div></section>
+{% endblock %}

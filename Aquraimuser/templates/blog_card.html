@@ -1,0 +1,9 @@
+<a href="{% url 'blog' post.slug %}" class="blog-card d-block text-decoration-none text-reset">
+  {% if post.image %}<img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy">{% else %}<div class="ph"><i class="bi bi-journal-text"></i></div>{% endif %}
+  <div class="p-3">
+    <small class="text-secondary"><i class="bi bi-calendar3 me-1"></i>{{ post.created|date:"d M Y" }}</small>
+    <h5 class="fw-bold mt-1">{{ post.title }}</h5>
+    <p class="text-secondary mb-2">{{ post.excerpt|default:post.content|truncatewords:22 }}</p>
+    <span class="fw-semibold text-primary">Read more <i class="bi bi-arrow-right"></i></span>
+  </div>
+</a>

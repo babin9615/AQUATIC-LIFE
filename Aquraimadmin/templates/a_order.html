@@ -1,0 +1,14 @@
+{% extends 'a_base.html' %}{% block title %}Order #{{ o.pk }}{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+  <h1 class="h3 fw-bold mb-0">Order #{{ o.pk }} <span class="badge {% if o.status == 'delivered' %}text-bg-success{% elif o.status == 'cancelled' %}text-bg-danger{% elif o.status == 'shipped' %}text-bg-warning{% else %}text-bg-primary{% endif %} fs-6 align-middle">{{ o.get_status_display }}</span></h1>
+  <form method="post" action="{% url 'a_orders' %}" class="d-flex gap-2">{% csrf_token %}<input type="hidden" name="order" value="{{ o.pk }}"><input type="hidden" name="back" value="{% url 'a_order' o.pk %}">
+    <select class="form-select" name="status" aria-label="Status">{% for k,v in statuses %}<option value="{{ k }}" {% if o.status == k %}selected{% endif %}>{{ v }}</option>{% endfor %}</select><button class="btn btn-primary text-nowrap">Update status</button></form></div>
+<div class="row g-4"><div class="col-lg-5"><div class="box p-4"><h5 class="fw-bold mb-3">Customer</h5><dl class="kv">
+  <dt>Account</dt><dd><a href="{% url 'a_user' o.user_id %}">{{ o.user.name }}</a></dd><dt>Email</dt><dd>{{ o.user.email }}</dd><dt>Name</dt><dd>{{ o.full_name }}</dd><dt>Phone</dt><dd>{{ o.phone }}</dd>
+  <dt>Address</dt><dd>{{ o.address }}, {{ o.city }} {{ o.pincode }}</dd><dt>Placed</dt><dd>{{ o.created|date:"d M Y, H:i" }}</dd><dt>Payment</dt><dd>Cash on delivery</dd></dl></div></div>
+<div class="col-lg-7"><div class="box"><div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Item</th><th>Price</th><th>Qty</th><th class="text-end">Subtotal</th></tr></thead><tbody>
+  {% for i in o.items.all %}<tr><td>{{ i.name }}</td><td>₹{{ i.price|floatformat:"-2" }}</td><td>{{ i.quantity }}</td><td class="text-end">₹{{ i.subtotal|floatformat:"-2" }}</td></tr>{% endfor %}</tbody>
+  <tfoot><tr class="fw-bold"><td colspan="3">Total</td><td class="text-end">₹{{ o.total|floatformat:"-2" }}</td></tr></tfoot></table></div></div></div></div>
+<a class="d-inline-block mt-3 text-decoration-none" href="{% url 'a_orders' %}"><i class="bi bi-arrow-left"></i> Back to orders</a>
+{% endblock %}

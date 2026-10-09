@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- HERO -->
+<section class="hero">
+  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active"><div class="container slide"><div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <span class="badge-pill mb-3"><i class="bi bi-stars me-1"></i> LIVE ARRIVAL GUARANTEE</span>
+          <h1 class="mb-3">India's Trusted<br>Aquatic Platform</h1>
+          <p class="lead mb-4">Discover, compare and shop healthy aquarium fish from a trusted seller. Packed safely, delivered live.</p>
+          <a href="{% url 'fish' %}" class="btn btn-light btn-lg text-primary px-4">Shop all fish <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+        <div class="col-lg-6"><img class="hero-img" src="{% static 'images/aq1.jpg' %}" alt="Aquarium fish"></div>
+      </div></div></div>
+      <div class="carousel-item"><div class="container slide"><div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <span class="badge-pill mb-3"><i class="bi bi-flower1 me-1"></i> EASY CARE AQUATIC PLANTS</span>
+          <h1 class="mb-3">Lush Live Plants<br>for Your Aquarium</h1>
+          <p class="lead mb-4">Vibrant plants, mosses and carpeting plants to build a beautiful underwater world.</p>
+          <a href="{% url 'plants' %}" class="btn btn-light btn-lg text-primary px-4">Shop aquatic plants <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+        <div class="col-lg-6"><img class="hero-img" src="{% static 'images/p1.jpg' %}" alt="Aquatic plants"></div>
+      </div></div></div>
+      <div class="carousel-item"><div class="container slide"><div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <span class="badge-pill mb-3"><i class="bi bi-truck me-1"></i> CASH ON DELIVERY</span>
+          <h1 class="mb-3">Pay When Your<br>Order Arrives</h1>
+          <p class="lead mb-4">Sign up in a minute, order your favourite species and pay cash on delivery anywhere in India.</p>
+          <a href="{% url 'signup' %}" class="btn btn-light btn-lg text-primary px-4">Create free account <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+        <div class="col-lg-6"><img class="hero-img" src="{% static 'images/Betta fish.jpg' %}" alt="Betta fish"></div>
+      </div></div></div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span><span class="visually-hidden">Previous</span></button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span><span class="visually-hidden">Next</span></button>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-4 bg-soft"><div class="container"><div class="row g-3">
+  <div class="col-6 col-lg-3"><div class="feature"><i class="bi bi-heart-pulse"></i><div><b>Live arrival</b><small>Guaranteed healthy</small></div></div></div>
+  <div class="col-6 col-lg-3"><div class="feature"><i class="bi bi-shield-check"></i><div><b>Quarantined</b><small>Disease-free stock</small></div></div></div>
+  <div class="col-6 col-lg-3"><div class="feature"><i class="bi bi-box-seam"></i><div><b>Safe packing</b><small>Oxygen-filled bags</small></div></div></div>
+  <div class="col-6 col-lg-3"><div class="feature"><i class="bi bi-cash-coin"></i><div><b>Cash on delivery</b><small>Pay at your door</small></div></div></div>
+</div></div></section>
+
+<!-- FISH CATEGORIES -->
+<section class="section"><div class="container">
+  <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+    <h2 class="section-title">Shop fish by species</h2><a href="{% url 'categories' %}" class="fw-semibold text-decoration-none">View all categories <i class="bi bi-arrow-right"></i></a></div>
+  <div class="row g-3 g-md-4">
+    {% for c in fish_cats %}<div class="col-6 col-md-4 col-lg-3">{% include 'cat_tile.html' %}</div>
+    {% empty %}<div class="col-12"><div class="alert alert-info mb-0">No categories yet. Admin can add them from the admin panel.</div></div>{% endfor %}
+  </div>
+</div></section>
+
+<!-- POPULAR FISH -->
+<section class="section bg-soft"><div class="container">
+  <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+    <h2 class="section-title">Popular fish</h2><a href="{% url 'fish' %}" class="fw-semibold text-decoration-none">Shop all fish <i class="bi bi-arrow-right"></i></a></div>
+  <div class="row g-3 g-md-4">
+    {% for p in fish %}{% include 'product_card.html' %}
+    {% empty %}<div class="col-12"><div class="alert alert-info mb-0">No fish added yet.</div></div>{% endfor %}
+  </div>
+</div></section>
+
+<!-- PLANTS -->
+<section class="section"><div class="container">
+  <div class="promo-leaf p-4 p-md-5 mb-5"><div class="row align-items-center g-3">
+    <div class="col-md-8"><h2 class="fw-bold">Build your underwater garden 🌿</h2><p class="mb-0 opacity-75">Easy-care stem plants, carpets, mosses and rhizome plants — grown healthy and shipped fresh.</p></div>
+    <div class="col-md-4 text-md-end"><a href="{% url 'plants' %}" class="btn btn-light text-success btn-lg">Shop plants</a></div></div></div>
+  {% if plant_cats %}
+  <div class="d-flex justify-content-between align-items-end mb-4"><h2 class="section-title">Plant categories</h2></div>
+  <div class="row g-3 g-md-4 mb-5">{% for c in plant_cats %}<div class="col-6 col-md-4 col-lg-3">{% include 'cat_tile.html' %}</div>{% endfor %}</div>{% endif %}
+  <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+    <h2 class="section-title">Popular aquatic plants</h2><a href="{% url 'plants' %}" class="fw-semibold text-decoration-none">View all <i class="bi bi-arrow-right"></i></a></div>
+  <div class="row g-3 g-md-4">
+    {% for p in plants %}{% include 'product_card.html' %}
+    {% empty %}<div class="col-12"><div class="alert alert-info mb-0">No plants added yet.</div></div>{% endfor %}
+  </div>
+</div></section>
+
+{% if blogs %}
+<section class="section bg-soft"><div class="container">
+  <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+    <h2 class="section-title">From our blog</h2><a href="{% url 'blogs' %}" class="fw-semibold text-decoration-none">Read more <i class="bi bi-arrow-right"></i></a></div>
+  <div class="row g-4">{% for post in blogs %}<div class="col-md-6 col-lg-4">{% include 'blog_card.html' %}</div>{% endfor %}</div>
+</div></section>{% endif %}
+
+<section class="section"><div class="container"><div class="promo p-4 p-md-5 text-center">
+  <h2 class="fw-bold">Need help choosing the right fish?</h2>
+  <p class="opacity-75 mb-4">Tell us about your tank and we'll recommend compatible, beginner-friendly species.</p>
+  <a href="{% url 'contact' %}" class="btn btn-light btn-lg text-primary px-4">Contact us</a>
+</div></div></section>
+{% endblock %}

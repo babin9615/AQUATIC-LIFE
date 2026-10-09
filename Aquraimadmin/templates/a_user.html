@@ -1,0 +1,13 @@
+{% extends 'a_base.html' %}{% block title %}{{ u.name }}{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3"><h1 class="h3 fw-bold mb-0">{{ u.name }}</h1>
+  <form method="post" action="{% url 'a_user_delete' u.pk %}" onsubmit="return confirm('Delete this user and their orders?')">{% csrf_token %}<button class="btn btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete user</button></form></div>
+<div class="row g-4"><div class="col-lg-4"><div class="box p-4">{% if u.image %}<img class="avatar mb-3" src="{{ u.image.url }}" alt="">{% endif %}
+  <dl class="kv"><dt>Email</dt><dd>{{ u.email }}</dd><dt>Age</dt><dd>{{ u.age }}</dd><dt>Orders</dt><dd>{{ orders|length }}</dd><dt>Total spent</dt><dd>₹{{ spent|floatformat:"-2" }}</dd></dl></div></div>
+<div class="col-lg-8"><h5 class="fw-bold">Order history</h5><div class="box"><div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Order</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody>
+  {% for o in orders %}<tr><td>#{{ o.pk }}<br><small class="text-secondary">{{ o.created|date:"d M Y" }}</small></td><td class="small">{% for i in o.items.all %}{{ i.quantity }} × {{ i.name }}<br>{% endfor %}</td><td>₹{{ o.total|floatformat:"-2" }}</td>
+    <td><span class="badge {% if o.status == 'delivered' %}text-bg-success{% elif o.status == 'cancelled' %}text-bg-danger{% elif o.status == 'shipped' %}text-bg-warning{% else %}text-bg-primary{% endif %}">{{ o.get_status_display }}</span></td>
+    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'a_order' o.pk %}">Details</a></td></tr>
+  {% empty %}<tr><td colspan="5" class="text-secondary py-4 text-center">This user has not placed any orders.</td></tr>{% endfor %}</tbody></table></div></div></div></div>
+<a class="d-inline-block mt-3 text-decoration-none" href="{% url 'a_users' %}"><i class="bi bi-arrow-left"></i> Back to users</a>
+{% endblock %}

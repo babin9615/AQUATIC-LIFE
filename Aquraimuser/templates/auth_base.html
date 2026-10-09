@@ -1,0 +1,30 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{% endblock %} · {{ site.name }}</title>
+<link rel="icon" href="{% static 'images/logo.png' %}">
+<link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+<div class="container-fluid"><div class="row auth-wrap">
+  <section class="col-lg-6 d-none d-lg-flex auth-side">
+    <a href="{% url 'home' %}" class="text-white text-decoration-none mb-auto"><i class="bi bi-arrow-left me-1"></i> Back to shop</a>
+    <h1>India’s trusted<br>aquatic platform</h1>
+    <p class="fs-5 opacity-75 mb-0" style="max-width:430px">Healthy fish and lush aquarium plants, delivered live to your door — with a live arrival guarantee.</p>
+  </section>
+  <section class="col-lg-6 d-flex align-items-center justify-content-center py-5 px-3">
+    <div class="auth-card">
+      <div class="brand text-center mb-4"><a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="{{ site.name }}"></a></div>
+      {% for m in messages %}<div class="alert alert-{{ m.tags|default:'info' }} alert-dismissible fade show" role="alert">{{ m }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>{% endfor %}
+      {% block form %}{% endblock %}
+    </div>
+  </section>
+</div></div>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+document.querySelectorAll('.pw-toggle').forEach(function(b){b.addEventListener('click',function(){
+  var i=document.getElementById(b.dataset.target);var show=i.type==='password';i.type=show?'text':'password';
+  b.innerHTML=show?'<i class="bi bi-eye-slash"></i>':'<i class="bi bi-eye"></i>';});});
+</script>
+</body></html>

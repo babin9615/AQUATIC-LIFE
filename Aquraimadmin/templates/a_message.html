@@ -1,0 +1,10 @@
+{% extends 'a_base.html' %}{% block title %}{{ m.subject }}{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3"><h1 class="h3 fw-bold mb-0">{{ m.subject }}</h1>
+  <div class="d-flex gap-2"><a class="btn btn-outline-secondary" href="{% url 'a_messages' %}"><i class="bi bi-arrow-left me-1"></i>Back</a>
+  <form method="post" action="{% url 'a_message_delete' m.pk %}" onsubmit="return confirm('Delete this message?')">{% csrf_token %}<button class="btn btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete</button></form></div></div>
+<div class="box p-4" style="max-width:780px"><dl class="kv mb-4"><dt>From</dt><dd>{{ m.name }}</dd><dt>Email</dt><dd><a href="mailto:{{ m.email }}">{{ m.email }}</a></dd>
+  <dt>Phone</dt><dd>{{ m.phone|default:"—" }}</dd><dt>Received</dt><dd>{{ m.created|date:"d M Y, H:i" }}</dd></dl>
+  <div class="border-top pt-3">{{ m.message|linebreaks }}</div>
+  <a class="btn btn-primary mt-2" href="mailto:{{ m.email }}?subject=Re: {{ m.subject|urlencode }}"><i class="bi bi-reply me-1"></i>Reply by email</a></div>
+{% endblock %}

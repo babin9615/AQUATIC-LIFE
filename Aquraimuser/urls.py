@@ -1,0 +1,30 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('categories/', views.categories_view, name='categories'),
+    path('products/', views.products, name='products'),
+    path('fish/', views.products, {'kind': 'fish'}, name='fish'),
+    path('plants/', views.products, {'kind': 'plant'}, name='plants'),
+    path('category/<slug:slug>/', views.products, name='category'),
+    path('product/<int:pk>/', views.product_detail, name='product'),
+    path('blogs/', views.blogs, name='blogs'),
+    path('blogs/<slug:slug>/', views.blog_detail, name='blog'),
+    path('about/', views.about, name='about'),
+    path('contact/', views.contact, name='contact'),
+    path('cart/', views.cart_view, name='cart'),
+    path('cart/add/<int:pk>/', views.cart_add, name='cart_add'),
+    path('cart/update/<int:pk>/', views.cart_update, name='cart_update'),
+    path('cart/remove/<int:pk>/', views.cart_remove, name='cart_remove'),
+    path('checkout/', views.checkout, name='checkout'),
+    path('orders/', views.my_orders, name='orders'),
+    path('orders/<int:pk>/', views.order_detail, name='order'),
+    path('orders/<int:pk>/cancel/', views.order_cancel, name='order_cancel'),
+    path('profile/', views.profile, name='profile'),
+    path('login/', views.login, name='login'),
+    path('signup/', views.signup, name='signup'),
+    path('registeraction/', views.registeraction, name='registeraction'),
+    path('loginaction/', views.loginaction, name='loginaction'),
+    path('logout/', views.logoutaction, name='logout'),
+]

@@ -1,0 +1,14 @@
+{% extends 'a_base.html' %}{% block title %}Categories{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3"><h1 class="h3 fw-bold mb-0">Categories</h1><a class="btn btn-primary" href="{% url 'a_category_new' %}"><i class="bi bi-plus-lg me-1"></i>Add category</a></div>
+<div class="box"><div class="table-responsive"><table class="table align-middle mb-0">
+  <thead><tr><th>Image</th><th>Name</th><th>Type</th><th>Products</th><th class="text-end">Actions</th></tr></thead><tbody>
+  {% for c in items %}<tr>
+    <td>{% if c.image %}<img class="th-img" src="{{ c.image.url }}" alt="">{% else %}<span class="th-img d-inline-block"></span>{% endif %}</td>
+    <td class="fw-semibold">{{ c.name }}</td>
+    <td><span class="badge {% if c.kind == 'plant' %}text-bg-success{% else %}text-bg-primary{% endif %}">{{ c.get_kind_display }}</span></td><td>{{ c.n }}</td>
+    <td class="text-end text-nowrap"><a class="btn btn-sm btn-outline-primary" href="{% url 'a_category_edit' c.pk %}"><i class="bi bi-pencil"></i></a>
+      <form class="d-inline" method="post" action="{% url 'a_category_delete' c.pk %}" onsubmit="return confirm('Delete {{ c.name|escapejs }} and all its products?')">{% csrf_token %}<button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button></form></td>
+  </tr>{% empty %}<tr><td colspan="5" class="text-secondary py-4 text-center">No categories yet. Add one (e.g. “Betta Fish” as fish, “Carpet Plants” as plant).</td></tr>{% endfor %}
+  </tbody></table></div></div>
+{% endblock %}

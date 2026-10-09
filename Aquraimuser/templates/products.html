@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}{% if cat %}{{ cat.name }}{% elif kind == 'plant' %}Aquatic plants{% elif kind == 'fish' %}Aquarium fish{% elif q %}Search: {{ q }}{% else %}All products{% endif %} - {{ site.name }}{% endblock %}
+{% block content %}
+{% if cat %}{% include 'page_head.html' with title=cat.name sub=cat.get_kind_display crumb=cat.get_kind_display %}
+{% elif kind == 'plant' %}{% include 'page_head.html' with title='Aquatic plants' sub='Live plants, mosses and carpets for your aquarium.' %}
+{% elif kind == 'fish' %}{% include 'page_head.html' with title='Aquarium fish' sub='Healthy, quarantined fish with live arrival guarantee.' %}
+{% elif q %}{% include 'page_head.html' with title='Search results' sub=q %}
+{% else %}{% include 'page_head.html' with title='All products' sub='Fish and plants for every aquarium.' %}{% endif %}
+
+<section class="section pt-4"><div class="container"><div class="row g-4">
+  <!-- sidebar -->
+  <aside class="col-lg-3">
+    <button class="btn btn-outline-primary w-100 d-lg-none mb-3" data-bs-toggle="collapse" data-bs-target="#filters"><i class="bi bi-funnel me-1"></i> Filters & categories</button>
+    <div class="collapse d-lg-block" id="filters">
+      <div class="card border-0 shadow-soft mb-3"><div class="card-body">
+        <h6 class="fw-bold mb-3">Browse</h6>
+        <div class="list-group list-group-flush">
+          <a class="list-group-item list-group-item-action {% if not cat and kind == 'fish' %}active{% endif %}" href="{% url 'fish' %}"><i class="bi bi-water me-2"></i>All fish</a>
+          <a class="list-group-item list-group-item-action {% if not cat and kind == 'plant' %}active{% endif %}" href="{% url 'plants' %}"><i class="bi bi-flower2 me-2"></i>All plants</a>
+        </div>
+        {% if sidebar %}<h6 class="fw-bold mt-4 mb-3">Categories</h6>
+        <div class="list-group list-group-flush">
+          {% for c in sidebar %}<a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if cat and cat.pk == c.pk %}active{% endif %}" href="{% url 'category' c.slug %}">{{ c.name }}<span class="badge text-bg-light rounded-pill">{{ c.n }}</span></a>{% endfor %}
+        </div>{% endif %}
+      </div></div>
+    </div>
+  </aside>
+  <!-- grid -->
+  <div class="col-lg-9">
+    <form class="row g-2 align-items-center mb-3" method="get">
+      <div class="col-12 col-md"><div class="input-group"><span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input class="form-control" name="q" value="{{ q }}" placeholder="Search by name" aria-label="Search"></div></div>
+      <div class="col-7 col-md-auto"><select name="sort" class="form-select" onchange="this.form.submit()" aria-label="Sort">
+        <option value="">Newest first</option>
+        <option value="low" {% if sort == 'low' %}selected{% endif %}>Price: low to high</option>
+        <option value="high" {% if sort == 'high' %}selected{% endif %}>Price: high to low</option>
+        <option value="name" {% if sort == 'name' %}selected{% endif %}>Name: A to Z</option></select></div>
+      <div class="col-5 col-md-auto"><div class="form-check"><input class="form-check-input" type="checkbox" name="instock" value="1" id="instock" {% if instock %}checked{% endif %} onchange="this.form.submit()"><label class="form-check-label" for="instock">In stock</label></div></div>
+      <div class="col-12 col-md-auto"><button class="btn btn-primary w-100">Search</button></div>
+    </form>
+    <p class="text-secondary">{{ total }} item{{ total|pluralize }} found</p>
+    <div class="row g-3 g-md-4">
+      {% for p in page %}{% include 'product_card.html' with cols='col-6 col-md-4' %}
+      {% empty %}<div class="col-12"><div class="alert alert-info">Nothing matches. Try another search or <a href="{% url 'categories' %}">browse categories</a>.</div></div>{% endfor %}
+    </div>
+    {% include 'pagination.html' %}
+  </div>
+</div></div></section>
+{% endblock %}
