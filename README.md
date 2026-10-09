@@ -1,11 +1,18 @@
+<<<<<<< HEAD
 # Aquatic Life (Aquraim) - Django + Bootstrap 5
 
 Aquarium fish & live plants shop: responsive Bootstrap storefront, cart, cash-on-delivery checkout,
 blogs, contact form, and a custom admin panel.
+=======
+# Aquatic Life (Aquraim)
+
+Django aquarium marketplace: browse fish/plants, cart, cash-on-delivery checkout, plus a custom admin panel.
+>>>>>>> 4fdf0191ada1a07cbdb4ade6b8188b122a2e18ae
 
 ## Run
 ```
 pip install -r requirements.txt
+<<<<<<< HEAD
 python manage.py migrate
 python manage.py seed          # optional: sample categories, products and blog posts
 python manage.py runserver
@@ -46,3 +53,17 @@ environment variables (see `Aquraim/settings.py`).
 ```
 python manage.py test
 ```
+=======
+# MySQL (default, see settings.py / DB_* env vars)  -- or for a quick start:  set USE_SQLITE=1
+python manage.py migrate
+python manage.py seed          # sample categories + products from the bundled images
+python manage.py runserver
+```
+- Shop: http://127.0.0.1:8000/  (sign up first, then log in)
+- Admin panel: http://127.0.0.1:8000/aquraimadmin/  (ADMIN_EMAIL / ADMIN_PASSWORD in settings.py, default babinjose@gmail.com / babinjose)
+- Django admin: http://127.0.0.1:8000/admin/ (`python manage.py createsuperuser`)
+
+## Pages
+**Shop:** `/` home, `/fish/`, `/plants/`, `/categories/`, product page (Add to cart / Buy now), `/cart/`, `/checkout/`, `/orders/` (+ detail & cancel), `/profile/`, `/signup/`, `/login/`.
+**Admin (`/aquraimadmin/`):** dashboard; Fish and Aquatic plants (view / add / edit / delete); categories; orders (filter, detail, status); users (details + order history, delete).
+>>>>>>> 4fdf0191ada1a07cbdb4ade6b8188b122a2e18ae
